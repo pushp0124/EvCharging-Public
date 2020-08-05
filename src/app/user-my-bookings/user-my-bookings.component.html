@@ -1,0 +1,45 @@
+
+<mat-radio-group class="example-radio-group"
+[(ngModel)]="selectedBookingType">
+  <mat-radio-button class="example-radio-button" *ngFor="let type of bookingTypes; let i = index;" [value]="i">
+    {{type}}
+  </mat-radio-button>
+</mat-radio-group>
+
+<div class="table-responsive">
+  <table class="table table-hover">
+    <thead>
+      <tr>
+   
+        <th>Ticket Number</th>
+        <th>Date</th>
+        <th>Machine ID</th>
+        <th>Level</th>
+        <th>Time</th>
+        <th>Campus</th>
+        <th>Action</th>
+       
+     
+        </tr>
+     
+    </thead>
+    <tbody>
+      <tr *ngFor="let booking  of bookings">
+        <ng-container *ngIf = "selectedBookingType == '0' ? (booking.bookedDate >= currentDate ? true : false): true"> 
+            <td>{{booking.ticketNo}}</td>
+            <td>{{booking.bookedDate}}</td>
+            <td>{{booking.bookedMachine.machineId}}</td>
+            <td>{{booking.bookedMachine.machineType}}</td>
+            <td>{{booking.bookingStartTime}}</td>
+            <td>{{booking.bookedMachine.machineStation.campusLocation}}</td>
+            <td>
+              <button  mat-raised-button [color] = "booking.bookedDate >= currentDate ? 'warn' : 'primary'" [innerText] = "booking.bookedDate >= currentDate ? 'Cancel' : 'View'"></button>
+      
+              <button style = "margin-left: 5px;" mat-raised-button color = "warn" *ngIf = "booking.bookedDate >= currentDate"> Reschedule</button>
+            </td>
+         </ng-container>
+          </tr>
+    </tbody>
+  </table>
+</div>
+

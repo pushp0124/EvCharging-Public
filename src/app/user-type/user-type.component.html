@@ -1,0 +1,33 @@
+<nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
+  <a class="navbar-brand" routerLink="/">EV Charging System</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav"
+    aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+
+    <ul class="navbar-nav ml-auto">
+
+
+      <li class="nav-item dropdown" *ngIf="isLoggedIn$ | async as isLoggedIn; else loggedOut">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false">
+          <mat-icon> account_circle</mat-icon>
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+          <a class="dropdown-item" routerLink="/" routerLinkActive="active">Profile</a>
+          <a class="dropdown-item" (click)="onLogout()">Logout</a>
+        </div>
+      </li>
+
+      <ng-template #loggedOut>
+        <li class="nav-item ">
+          <a class="nav-link" routerLink="/userlogin" routerLinkActive="active">Login</a>
+        </li>
+      </ng-template>
+      <li class="nav-item ">
+        <a class="nav-link" routerLink="/about" routerLinkActive="active">About</a>
+      </li>
+    </ul>
+  </div>
+</nav>

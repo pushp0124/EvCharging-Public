@@ -1,0 +1,11 @@
+
+<h2 mat-dialog-title style="text-align: center">Selected Machine Id : {{data.selectedMachineDetailValue.machineId}}</h2>
+<mat-dialog-content>
+ <h4>{{message}}</h4>
+  <div *ngIf = "data.selectedMachineDetailValue.machineStatus">
+
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button *ngFor = "let action of actions; let i = index;" [mat-dialog-close] = "action">{{action}}</button>
+</mat-dialog-actions>

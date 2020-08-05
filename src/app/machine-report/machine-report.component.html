@@ -1,0 +1,58 @@
+<div style="display: flex; justify-content: space-between;"> 
+        <mat-form-field>
+            <mat-label>Select Station</mat-label>
+            <mat-select [(value)]="selectedStation" (selectionChange)="stationSelectionListClicked($event.value)">
+              <mat-option *ngFor = "let station of stations" [value]="station">{{station.city}} {{station.campusLocation}}</mat-option>
+        
+            </mat-select>
+          </mat-form-field>
+        <mat-form-field class="example-full-width">
+            <input matInput [min]="minFromDate" [matDatepicker]="picker1" placeholder="Choose from date" (dateInput)="onFromDateChange($event.value)" readonly>
+            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+            <mat-datepicker #picker1></mat-datepicker>
+          </mat-form-field>
+        
+          <mat-form-field class="example-full-width">
+            <input matInput [min]="minToDate" [matDatepicker]="picker2" placeholder="Choose to date" (dateInput)="onToDateChange($event.value)" [(ngModel)] = "selectedToDate" readonly>
+            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+            <mat-datepicker #picker2></mat-datepicker>
+          </mat-form-field>
+        
+</div>
+
+
+<mat-grid-list cols="2" rowheight = "2:1" [gutterSize]="'10px'">
+        <mat-grid-tile *ngFor = "let report of machineReports; let i = index;">
+      
+          <mat-card>
+              <mat-card-header style="justify-content: center;">
+                  <mat-card-title>Machine Id: {{report.machine.machineId}}</mat-card-title>
+                  <mat-card-subtitle>{{report.machine.machineType}} - {{report.machine.slotDuration}}</mat-card-subtitle>
+                </mat-card-header>
+                    <canvas baseChart
+                      [data]="doughnutChartList[i]"
+                      [labels]="doughnutChartLabels"
+                      [chartType]="doughnutChartType"
+                      class = "bar-chart-wrapper">
+                    </canvas>
+      
+                    <mat-card-content>
+                     
+                       <br>
+                       <h4>Current Report </h4>
+                     
+                       Machine Current Status : {{report.machine.machineStatus}}
+                       <br>
+                       StartingDate : {{report.machine.startingDate}}
+                       <br>
+                        Machine Available hours : {{report.machine.startTime}} - {{report.machine.endTime}}
+                       <br>
+                     
+                    </mat-card-content>
+          </mat-card>  
+        </mat-grid-tile>
+       
+      </mat-grid-list>
+      
+      
+      

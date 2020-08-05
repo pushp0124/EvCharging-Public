@@ -1,0 +1,15 @@
+     <div class="sidebar">
+      <a routerLink="/userhomepage" routerLinkActive = "active" [routerLinkActiveOptions]="{exact: true}"> Home </a>
+      <a routerLink="userbookslot" routerLinkActive = "active" [routerLinkActiveOptions]="{exact: true}"> Book Slot</a>
+      <a routerLink="userbookingsreport" routerLinkActive = "active" [routerLinkActiveOptions]="{exact: true}"> Bookings Report</a>
+      <a routerLink="usermybookings" routerLinkActive = "active" [routerLinkActiveOptions]="{exact: true}"> My Bookings</a>
+    </div>
+    
+    <!-- Page content -->
+    <div class="content">
+      <div class="col-md-10 card card-body text-center">
+         <router-outlet> </router-outlet>
+     </div>
+    </div>
+
+    

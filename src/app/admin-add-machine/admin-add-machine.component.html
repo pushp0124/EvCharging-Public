@@ -1,0 +1,62 @@
+<!-- <div class="alert alert-danger" *ngIf="error">
+  {{error}}
+</div>
+
+<mat-form-field>
+  <mat-label>Select Station</mat-label>
+  <mat-select [(value)]="selectedStation" (selectionChange)="stationSelectionListClicked($event.value)">
+    <mat-option *ngFor = "let station of stations" [value]="station">{{station.city}} {{station.campusLocation}}</mat-option>
+
+  </mat-select>
+</mat-form-field>
+
+<mat-card>
+  <h4 class="text-center">Add Machine</h4>
+  <form #machinesForm="ngForm" (ngSubmit)="addMachine(machinesForm)" >
+           
+      <div class = "form-group">
+
+          Select Slot Duration :  
+          <mat-form-field>
+              <mat-label>Select Duration</mat-label>
+              <mat-select name="slotDurations" id="slotDurations"  [(value)]="selectedMachineSlot" (selectionChange)="selectSlotDuration($event.target.value)">
+                <mat-option *ngFor = "let duration of slotDurations" value={{duration}}>{{duration}}</mat-option>
+             </mat-select>
+            </mat-form-field>
+            
+      </div>
+      <div class = "form-group">
+
+        Select Machine Type :  
+          <mat-form-field>
+              <mat-label>Select Machine Type</mat-label>
+              <mat-select name="chargerTypes" id="chargerTypes" [(value)]="selectedMachineType" (selectionChange)="selectChargerType($event.value)">
+                <mat-option *ngFor = "let type of chargerTypes" [value]="type">{{type}}</mat-option>
+             </mat-select>
+            </mat-form-field>
+      </div>
+      <div class="form-group">
+            <label for="startingDate">Starting Date</label>
+            <input type="date" name="startingDate" #startingDate="ngModel" ngModel
+              class="form-control" required>
+              <div *ngIf="startingDate.touched && startingDate.invalid" >
+                <p class="alert alert-danger" > *This field is required</p>
+              </div>
+      </div>
+      <div class="form-group">
+        <label for="startTime">Start Time</label>
+        <select name="startTime" id="startTime" (change) = "selectStartTime($event.target.value)">
+          <option *ngFor = "let time of startTime let i=index" value={{i}}>{{time}}</option>
+      </select>
+      </div>
+   
+      <div class="form-group">
+        <label for="endTime">End Time</label>
+        <select name="endTime" id="endTime" (change) = "selectEndTime($event.target.value)">
+          <option *ngFor = "let time of endTime let i = index" value={{i}} >{{time}}</option>
+      </select>
+      </div>
+      <button type="submit" class="btn btn-primary btn-raised" data-toggle="modal" data-target="#exampleModalCenter"> Add Machine</button>   
+
+  </form>
+</mat-card> -->

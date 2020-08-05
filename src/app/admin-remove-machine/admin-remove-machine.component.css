@@ -1,0 +1,27 @@
+table {
+  width: 100%;
+}
+
+.mat-header-cell {
+  font-size: 16px;
+}
+
+.mat-cell {
+  font-size: 14px;
+}
+
+
+.chartWrapper {
+  position: relative;
+}
+.chartWrapper > canvas {
+  position: absolute;
+  left: 0;
+  top: 0;
+  pointer-events:none;
+}
+.chartAreaWrapper {
+  width: 600px;
+  overflow-x: scroll;
+}
+

@@ -1,0 +1,121 @@
+<div class="alert alert-danger" *ngIf="errorMessage">
+    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+    <strong>Error </strong>{{errorMessage}}
+</div>
+
+<div class="alert alert-success" *ngIf="successMessage">
+    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+    <strong>Success </strong> {{successMessage}}
+</div>
+
+
+<div class="back" style="overflow: hidden;">
+
+
+    <mat-card style="margin: 0 auto; width: 70%;">
+
+        <mat-horizontal-stepper linear #stepper>
+            <mat-step [stepControl]="firstFormGroup" [editable]="isEditable">
+                <form [formGroup]="firstFormGroup">
+                    <ng-template matStepLabel>Personal Details</ng-template>
+                    <p>
+                        <mat-form-field appearance="fill">
+                            <mat-label>Name</mat-label>
+                            <input matInput formControlName="nameCtrl" placeholder="Last name, First name" required>
+                        </mat-form-field>
+                    </p>
+
+                    <p>
+                        <mat-form-field appearance="fill">
+                            <mat-label>Select Your Nearest Capgemini Ev Charging Station</mat-label>
+                            <mat-select [(value)]="selectedStation"
+                                (selectionChange)="stationListClicked()">
+                                <mat-option *ngFor="let station of stations" [value]="station">{{station.city}}
+                                    {{station.campusLocation}}</mat-option>
+                            </mat-select>
+                            <mat-hint align="end">Here's the dropdown arrow ^</mat-hint>
+                        </mat-form-field>
+                    </p>
+                    <p>
+                        <mat-form-field appearance="fill">
+                            <mat-label>Select Your Machine Type</mat-label>
+                            <mat-select [(value)]="selectedMachineType"
+                                (selectionChange)="machineListClicked()">
+                                <mat-option *ngFor="let type of chargerTypes" [value]="type">{{type}}</mat-option>
+                            </mat-select>
+                            <mat-hint align="end">Here's the dropdown arrow ^</mat-hint>
+                        </mat-form-field>
+                    </p>
+                    <div>
+                        <button mat-raised-button matStepperNext color="primary">Next</button>
+                    </div>
+                </form>
+            </mat-step>
+            <mat-step [stepControl]="secondFormGroup" [editable]="isEditable">
+                <form [formGroup]="secondFormGroup">
+                    <ng-template matStepLabel>Fill Communication Details</ng-template>
+                    <p>
+                        <mat-form-field appearance="fill">
+                            <mat-label>Email</mat-label>
+                            <input matInput formControlName="emailCtrl" placeholder="Your Email" required>
+                        </mat-form-field>
+                    </p>
+                    <p>
+                        <mat-form-field appearance="fill">
+                            <mat-label>Phone Number</mat-label>
+                            <input matInput formControlName="phoneCtrl" placeholder="Your Phone Number" required
+                                type="number">
+                        </mat-form-field>
+                    </p>
+                    <div>
+                        <button mat-raised-button matStepperPrevious color="primary"
+                            style="margin-right: 20px;">Back</button>
+                        <button mat-raised-button matStepperNext color="primary">Next</button>
+                    </div>
+                </form>
+            </mat-step>
+            <mat-step [stepControl]="thirdFormGroup" [editable]="isEditable">
+                <form [formGroup]="thirdFormGroup">
+                    <ng-template matStepLabel>Password Details</ng-template>
+                    <p>
+                        <mat-form-field appearance="fill">
+                            <mat-label>Enter your password</mat-label>
+                            <input matInput [type]="hide ? 'password' : 'text'" (change)="onPasswordChange()"
+                                formControlName="passwordCtrl">
+                            <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
+                                [attr.aria-pressed]="hide">
+                                <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                            </button>
+                        </mat-form-field>
+                    </p>
+                    <p>
+                        <mat-form-field appearance="fill">
+                            <mat-label>Confirm password</mat-label>
+                            <input matInput [type]="hide ? 'password' : 'text'" (change)="onPasswordChange()"
+                                formControlName="confirmPasswordCtrl">
+                            <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
+                                [attr.aria-pressed]="hide">
+                                <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                            </button>
+                        </mat-form-field>
+                    </p>
+
+                    
+                    <div class="alert alert-danger"  *ngIf="confirm_password.hasError('mismatch')">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                        Passwords do not match.
+                    </div>
+                
+                    <div>
+                        <button mat-raised-button matStepperPrevious color="primary"
+                            style="margin-right: 20px;">Back</button>
+                        <button mat-raised-button matStepperNext color="primary" [disabled]="!thirdFormGroup.valid"
+                            (click)="registerEmployee()">Register</button>
+                    </div>
+                </form>
+            </mat-step>
+        </mat-horizontal-stepper>
+
+    </mat-card>
+
+</div>

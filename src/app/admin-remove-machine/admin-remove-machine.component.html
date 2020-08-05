@@ -1,0 +1,84 @@
+
+<div style="display: flex; justify-content: space-between; margin-top: 30px;margin-bottom: 25px;"> 
+        <mat-form-field>
+            <mat-label>Select Station</mat-label>
+            <mat-select [(value)]="selectedStation" (selectionChange)="stationSelectionListClicked($event.value)">
+              <mat-option *ngFor = "let station of stations" [value]="station">{{station.city}} {{station.campusLocation}}</mat-option>
+        
+            </mat-select>
+          </mat-form-field>
+        
+          <mat-form-field *ngIf = "selectedViewType == 0">
+            <mat-label>Select Machine Type</mat-label>
+            <mat-select [(value)]="selectedMachineType" (selectionChange)="levelSelectionListClicked($event.value)">
+              <mat-option *ngFor = "let type of machineTypes" [value]="type">{{type}}</mat-option>
+           </mat-select>
+          </mat-form-field>
+</div>
+<mat-form-field>
+  <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+</mat-form-field>
+
+<div class="mat-elevation-z8">
+<table mat-table [dataSource]="dataSource">
+
+ 
+  <ng-container matColumnDef="machineId">
+    <th mat-header-cell *matHeaderCellDef style="text-align: center"  mat-sort-header> Machine Id </th>
+    <td mat-cell *matCellDef="let element"> {{element.machineId}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="machineType">
+    <th mat-header-cell *matHeaderCellDef style="text-align: center" > Machine Type </th>
+    <td mat-cell *matCellDef="let element"> {{element.machineType}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="city">
+    <th mat-header-cell *matHeaderCellDef style="text-align: center" >City</th>
+    <td mat-cell *matCellDef="let element"> {{element.machineStation.city}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="campus">
+    <th mat-header-cell *matHeaderCellDef style="text-align: center"  >Campus Location</th>
+    <td mat-cell *matCellDef="let element"> {{element.machineStation.campusLocation}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="startTime" >
+    <th mat-header-cell *matHeaderCellDef style="text-align: center" > Start Time </th>
+    <td mat-cell *matCellDef="let element"> {{element.startTime}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="endTime" >
+    <th mat-header-cell *matHeaderCellDef style="text-align: center" > End Time </th>
+    <td mat-cell *matCellDef="let element"> {{element.endTime}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="startDate">
+    <th mat-header-cell *matHeaderCellDef style="text-align: center" > Start Date </th>
+    <td mat-cell *matCellDef="let element"> {{element.startingDate}} </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns" style="background-color:lightgrey"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click) = "machineRowClicked(row)" [style.background-color] = "row.machineStatus == 'HALTED' ? 'lightpink' : (row.machineStatus == 'REMOVED' ?  'lightcoral' : 'lightgreen')"></tr>
+</table>
+
+<mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+
+</div>
+
+
+ 
+<div *ngIf = "selectedMachine != undefined">
+  <div style="display: block;" class="bar-chart-wrapper" >
+     <canvas baseChart
+       [datasets]="barChartData"
+       [labels]="barChartLabels"
+       [options]="barChartOptions"
+       [plugins]="barChartPlugins"
+       [legend]="barChartLegend"
+       [chartType]="barChartType"
+       [colors] = "barChartColors">
+     </canvas>
+   </div>
+   <button mat-button mat-raised-button color="primary"  onClick="window.print()">Print</button>
+ </div>

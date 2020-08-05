@@ -1,0 +1,8 @@
+.back {
+    background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 150" preserveAspectRatio="none" style="height: 100%; width: 100%;"><path d="M211.62,-46.88 C79.57,32.06 270.03,70.06 -84.08,153.45 L500.00,150.00 L500.00,0.00 Z" style="fill:rgb(149,230,22) ;"></path></svg>');
+    position: absolute;
+    top: 55;
+    left: 0;
+    width: 100%;
+    height: 100%
+}

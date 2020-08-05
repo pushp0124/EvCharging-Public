@@ -1,0 +1,41 @@
+
+<table class="table table-striped; theme-table">
+        <thead>
+             Profile Details
+        </thead>
+    <tbody>
+        <tr>
+            <th scope="row">Id</th>
+            <td>{{employee.employeeId}}</td>
+         
+        </tr>
+        <tr>
+            <th scope="row">Name</th>
+            <td>{{employee.empName}}</td>
+         
+        </tr>
+        <tr>
+            <th scope="row">Mail Id</th>
+            <td>{{employee.mailId}}</td>
+            
+        </tr>
+        <tr>
+            <th scope="row">Contact No</th>
+            <td>{{employee.phoneNo}}</td>
+        </tr>
+        <tr>
+         <th scope="row">Machine Type</th>
+         <td>{{employee.employeeMachineType}}</td>
+        </tr>
+        <tr>
+         <th scope="row">Station</th>
+         <td>{{employee.employeeStation.city}} - {{employee.employeeStation.campusLocation}}</td>
+        </tr>
+        <tr>
+         <th scope="row">Are you Admin?</th>
+         <td>{{employee.isAdmin}}</td>
+        </tr>
+    </tbody>
+ </table>
+ 
+

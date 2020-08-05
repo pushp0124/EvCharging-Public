@@ -1,0 +1,80 @@
+<!-- <mat-card> 
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-3" style="margin-left: 5%;">
+    
+            </div>
+            <div class="col-sm-5" ><br><br><br>
+                <h1 style="text-align: center;"><b>Login</b></h1>
+            <br>
+                <form class="form"> 
+                        
+       
+                <div class="form-group">
+                <label style="font-size: 15px; color: black">Email</label>
+                <input type="text" class="form-control" #email required style="font-size: 15px">
+                </div>
+                 
+                <div class="form-group">
+                <label style="font-size: 15px; color: black">Password</label>
+                <input type="password" class="form-control" #password required style="font-size: 15px">
+                </div>
+                 <br>
+                <div class="form-group">
+                <button (click)="loginUser(email.value,password.value)" mat-raised-button color="primary" style="margin-left: 40%; width: 80px; height: 40px;"> Login </button>
+                </div>
+            <br>
+                  <div id="formFooter">
+                    <a class="underlineHover" href="#" style="font-size: 15px; color: blue; margin-left:35%">Forgot Password?</a>
+                  </div>
+            <br>
+            <br>
+                  <div id="formFooter">
+                    <a class="underlineHover"  style="font-size: 15px; margin-left:30%" routerLink = "/signup">Don't have an account, register!</a>
+                  </div>
+               </form>
+                
+            </div>
+            </div>
+    </div>
+</mat-card> -->
+
+<div class="alert alert-danger" *ngIf="errorMessage">
+    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+    <strong>Error </strong>{{errorMessage}}
+</div>
+
+<div class="alert alert-success" *ngIf="successMessage">
+    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+    <strong>Success </strong> {{successMessage}}
+</div>
+
+
+
+
+<div class="back" style="overflow: hidden; text-align: center;">
+
+    <mat-card style="display: inline-block; text-align: center">
+        <form [formGroup] = "loginFormGroup">
+            <mat-form-field appearance="fill">
+                <mat-label>Email</mat-label>
+                <input matInput formControlName="emailCtrl" matinput="" placeholder="johdoe@capgemini.com" required>
+            </mat-form-field>
+            <p> </p>
+            <mat-form-field appearance="fill">
+                <mat-label>Password</mat-label>
+                <input matInput [type]="hide ? 'password' : 'text'" formControlName="passwordCtrl" required>
+                <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
+                    [attr.aria-pressed]="hide">
+                    <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                </button>
+            </mat-form-field>
+            <p> </p>
+            <button mat-raised-button color="primary" style="margin-right: 20px;" [disabled]="!loginFormGroup.valid"
+                (click)="loginUser()">Login</button>
+        </form>
+
+        <button color="accent" mat-stroked-button style="margin: 30px;" routerLink="/signup"
+            routerLinkActive="active">Don't have an account, Register now! </button>
+    </mat-card>
+</div>

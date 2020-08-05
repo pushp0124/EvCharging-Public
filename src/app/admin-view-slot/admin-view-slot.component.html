@@ -1,0 +1,135 @@
+ 
+ <mat-radio-group class="example-radio-group"
+ [(ngModel)]="selectedViewType"
+ (change)="radioChange($event)" style="display: flex; justify-content:space-between">
+   <mat-radio-button class="example-radio-button" *ngFor="let type of viewTypes; let i = index;" [value]="i">
+     {{type}}
+   </mat-radio-button>
+ </mat-radio-group>
+
+<div style="display: flex; justify-content: space-between; margin-top: 30px;margin-bottom: 25px;"> 
+    <mat-form-field>
+        <mat-label>Select Station</mat-label>
+        <mat-select [(value)]="selectedStation" (selectionChange)="stationSelectionListClicked($event.value)">
+          <mat-option *ngFor = "let station of stations" [value]="station">{{station.city}} {{station.campusLocation}}</mat-option>
+    
+        </mat-select>
+      </mat-form-field>
+    
+      <mat-form-field *ngIf = "selectedViewType == 0">
+        <mat-label>Select Machine Type</mat-label>
+        <mat-select [(value)]="selectedMachineType" (selectionChange)="levelSelectionListClicked($event.value)">
+          <mat-option *ngFor = "let type of machineTypes" [value]="type">{{type}}</mat-option>
+       </mat-select>
+      </mat-form-field>
+      <mat-form-field  *ngIf = "selectedViewType == 1">
+        <mat-label>Select Machine Slot</mat-label>
+        <mat-select [(value)]="selectedMachineSlot" (selectionChange)="slotSelectionListClicked($event.value)">
+          <mat-option *ngFor = "let slot of machineSlots" [value]="slot">{{slot}}</mat-option>
+       </mat-select>
+      </mat-form-field>
+      
+</div>
+     
+    
+      <mat-progress-bar mode="indeterminate" *ngIf = "!dataLoaded" class = "centred"></mat-progress-bar>
+    
+    <div style="text-align:center;" *ngIf = "dataLoaded && selectedViewType == 0">
+        <div style="display:inline-block;" class = "scroll">
+          <div *ngFor = "let machineDetailKey of fifteenMinutesMachineDetailKey"> 
+                <mat-card class="machine-card" >
+                  <mat-card-header class="machine-card-header">
+                    <mat-card-title>{{machineDetailKey.startTime}} - {{machineDetailKey.endTime}} </mat-card-title>
+                    <mat-card-subtitle>{{machineDetailKey.slotDuration}} {{machineDetails.machineDetailKey}}</mat-card-subtitle>
+                  </mat-card-header>
+                  <mat-card-actions>
+                    <button *ngIf = "machineDetails.get(machineDetailKey).length == 0" mat-raised-button color="basic" disabled> No machine available</button>
+                      <button style="min-width: 85px; min-height: 30px; margin-block-end: 10px;" *ngFor = "let machine of machineDetails.get(machineDetailKey)" mat-raised-button [color] = "machine.status == 'BOOKED' ? (machine.bookedByEmployeeId == loggedInEmployeeId ?  'primary' : 'warn') : 'success'" (click) = "machineButtonClicked(machineDetailKey.startTime,machine)" >{{machine.machineId}}</button>
+                     </mat-card-actions>
+                </mat-card>
+          </div>
+        </div>
+       
+        <div style="display:inline-block;" class = "scroll">
+            <div *ngFor = "let machineDetailKey of thirtyMinutesMachineDetailKey"> 
+                <mat-card class="machine-card" >
+                  <mat-card-header class = "machine-card-header">
+                    <mat-card-title >{{machineDetailKey.startTime}} - {{machineDetailKey.endTime}} </mat-card-title>
+                    <mat-card-subtitle>{{machineDetailKey.slotDuration}} {{machineDetails.machineDetailKey}}</mat-card-subtitle>
+                  </mat-card-header>
+                  <mat-card-actions>
+    
+                      <button *ngIf = "machineDetails.get(machineDetailKey).length == 0" mat-raised-button color="basic" disabled> No machine available</button>
+                      <button style="min-width: 85px; min-height: 30px; margin-block-end: 10px;" *ngFor = "let machine of machineDetails.get(machineDetailKey)" mat-raised-button [color] = "machine.status == 'BOOKED' ? (machine.bookedByEmployeeId == loggedInEmployeeId ?  'primary' : 'warn') : 'success'" (click) = "machineButtonClicked(machineDetailKey.startTime,machine.machineId)" >{{machine.machineId}}</button>
+                     </mat-card-actions>
+                </mat-card>
+          </div>
+        
+        </div>
+    
+        <div style="display:inline-block;" class = "scroll">
+            <div *ngFor = "let machineDetailKey of sixtyMinutesMachineDetailKey"> 
+                <mat-card class="machine-card" >
+                  <mat-card-header class = "machine-card-header">
+                    <mat-card-title>{{machineDetailKey.startTime}} - {{machineDetailKey.endTime}} </mat-card-title>
+                    <mat-card-subtitle>{{machineDetailKey.slotDuration}} {{machineDetails.machineDetailKey}}</mat-card-subtitle>
+                  </mat-card-header>
+                  <mat-card-actions>
+                    <button *ngIf = "machineDetails.get(machineDetailKey).length == 0" mat-raised-button color="basic" disabled> No machine available</button>
+                      <button style="min-width: 85px; min-height: 30px; margin-block-end: 10px;" *ngFor = "let machine of machineDetails.get(machineDetailKey)" mat-raised-button [color] = "machine.status == 'BOOKED' ? (machine.bookedByEmployeeId == loggedInEmployeeId ?  'primary' : 'warn') : 'success'" (click) = "machineButtonClicked(machineDetailKey.startTime,machine.machineId)" >{{machine.machineId}}</button>
+                    </mat-card-actions>
+                </mat-card>
+          </div>
+        
+        </div>
+    </div>
+  
+    <div style="text-align:center;" *ngIf = "dataLoaded && selectedViewType == 1">
+        <div style="display:inline-block;" class = "scroll">
+          <div *ngFor = "let machineDetailKey of level1MachinesDetailKey"> 
+                <mat-card class="machine-card" >
+                  <mat-card-header class="machine-card-header">
+                    <mat-card-title>{{machineDetailKey.startTime}} - {{machineDetailKey.endTime}} </mat-card-title>
+                    <mat-card-subtitle>{{machineDetailKey.machineType}} {{machineDetails.machineDetailKey}}</mat-card-subtitle>
+                  </mat-card-header>
+                  <mat-card-actions>
+                    <button *ngIf = "machineDetailsBySlot.get(machineDetailKey).length == 0" mat-raised-button color="basic" disabled> No machine available</button>
+                      <button style="min-width: 85px; min-height: 30px; margin-block-end: 10px;" *ngFor = "let machine of machineDetailsBySlot.get(machineDetailKey)" mat-raised-button [color] = "machine.status == 'BOOKED' ? (machine.bookedByEmployeeId == loggedInEmployeeId ?  'primary' : 'warn') : 'success'" (click) = "machineButtonClicked(machineDetailKey.startTime,machine)" >{{machine.machineId}}</button>
+                     </mat-card-actions>
+                </mat-card>
+          </div>
+        </div>
+       
+        <div style="display:inline-block;" class = "scroll">
+            <div *ngFor = "let machineDetailKey of level2MachinesDetailKey"> 
+                <mat-card class="machine-card" >
+                  <mat-card-header class = "machine-card-header">
+                    <mat-card-title >{{machineDetailKey.startTime}} - {{machineDetailKey.endTime}} </mat-card-title>
+                    <mat-card-subtitle>{{machineDetailKey.machineType}} {{machineDetails.machineDetailKey}}</mat-card-subtitle>
+                  </mat-card-header>
+                  <mat-card-actions>
+                    <button *ngIf = "machineDetailsBySlot.get(machineDetailKey).length == 0" mat-raised-button color="basic" disabled> No machine available</button>
+                      <button style="min-width: 85px; min-height: 30px; margin-block-end: 10px;" *ngFor = "let machine of machineDetailsBySlot.get(machineDetailKey)" mat-raised-button [color] = "machine.status == 'BOOKED' ? (machine.bookedByEmployeeId == loggedInEmployeeId ?  'primary' : 'warn') : 'success'" (click) = "machineButtonClicked(machineDetailKey.startTime,machine)" >{{machine.machineId}}</button>
+                     </mat-card-actions>
+                </mat-card>
+          </div>
+        
+        </div>
+    
+        <div style="display:inline-block;" class = "scroll">
+            <div *ngFor = "let machineDetailKey of level3MachinesDetailKey"> 
+                <mat-card class="machine-card" >
+                  <mat-card-header class = "machine-card-header">
+                    <mat-card-title>{{machineDetailKey.startTime}} - {{machineDetailKey.endTime}} </mat-card-title>
+                    <mat-card-subtitle>{{machineDetailKey.machineType}} {{machineDetails.machineDetailKey}}</mat-card-subtitle>
+                  </mat-card-header>
+                  <mat-card-actions>
+                    <button *ngIf = "machineDetailsBySlot.get(machineDetailKey).length == 0" mat-raised-button color="basic" disabled> No machine available</button>
+                      <button style="min-width: 85px; min-height: 30px; margin-block-end: 10px;" *ngFor = "let machine of machineDetailsBySlot.get(machineDetailKey)" mat-raised-button [color] = "machine.status == 'BOOKED' ? (machine.bookedByEmployeeId == loggedInEmployeeId ?  'primary' : 'warn') : 'success'" (click) = "machineButtonClicked(machineDetailKey.startTime,machine)" >{{machine.machineId}}</button>
+                     </mat-card-actions>
+                </mat-card>
+          </div>
+        
+        </div>
+    </div>
+  

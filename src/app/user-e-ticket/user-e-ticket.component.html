@@ -1,0 +1,54 @@
+<div class = "theme" >
+<h2 mat-dialog-title>Your E-Ticket</h2>
+ 
+ <mat-dialog-content> 
+ 
+
+        <table class="table table-striped; theme-table">
+                <tbody>
+                    <tr>
+                        <th scope="row">Employee Id</th>
+                        <td>{{booking.bookingByEmployee.employeeId}}</td>
+                     
+                    </tr>
+                    <tr>
+                        <th scope="row">Machine Id</th>
+                        <td>{{booking.bookedMachine.machineId}}</td>
+                        
+                    </tr>
+                    <tr>
+                        <th scope="row">Machine Level</th>
+                        <td>{{booking.bookedMachine.machineType}}</td>
+                    </tr>
+                    <tr>
+                     <th scope="row">Time</th>
+                     <td>{{booking.bookingStartTime}}</td>
+                    </tr>
+                    <tr>
+                     <th scope="row">Ticket Number</th>
+                     <td>{{booking.ticketNo}}</td>
+                    </tr>
+                    <tr>
+                     <th scope="row">Date</th>
+                     <td>{{booking.bookedDate}}</td>
+                    </tr>
+                    <tr>
+                     <th scope="row">City</th>
+                     <td>{{booking.bookedMachine.machineStation.city}}</td>
+                    </tr>
+                    <tr>
+                     <th scope="row">Campus</th>
+                     <td>{{booking.bookedMachine.machineStation.campusLocation}}</td>
+                    </tr>
+                </tbody>
+             </table>
+             
+
+ 
+
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+        <button mat-dialog-close mat-button mat-raised-button color="primary"  onClick="window.print()">Print</button>
+</mat-dialog-actions>
+
+</div>
