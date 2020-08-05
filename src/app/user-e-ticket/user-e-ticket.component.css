@@ -1,6 +1,8 @@
 .theme {
-    background:url(https://s3-us-west-2.amazonaws.com/thecoderlistlive/companies/company_logos/000/000/051/original/capgemini.jpg?1556038544);
+    
+    background:url("/assets/capgemini.png");
     background-repeat:no-repeat;
     background-attachment: fixed;
     background-position: center; 
+    background-size: 100% 100%;
 }

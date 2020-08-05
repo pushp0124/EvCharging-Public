@@ -38,8 +38,9 @@ export class UserLoginComponent implements OnInit {
         this.router.navigate(['./userhomepage'])
       }
       
-    }, (loginError) => {
-        this.errorMessage = loginError.error.message;  
+    }, (loginError) => { 
+      this.errorMessage = loginError.error.message; 
+
     }
     )
   }
@@ -52,4 +53,11 @@ export class UserLoginComponent implements OnInit {
     return this.loginFormGroup.controls['passwordCtrl'];
   }
 
+  errorClosed() {
+    this.errorMessage = undefined;
+  }
+
+  successClosed() {
+    this.successMessage = undefined;
+  }
 }

@@ -27,7 +27,9 @@ export class SignUpComponent implements OnInit {
   hide = true;
   isAdminSignUp = false;
   errorMessage : string;
+  successMessage : string;
 
+  
   ngOnInit() {
     
     this.firstFormGroup = this._formBuilder.group({
@@ -111,5 +113,14 @@ export class SignUpComponent implements OnInit {
   
   get confirm_password(): AbstractControl {
     return this.thirdFormGroup.controls['confirmPasswordCtrl'];
+  }
+
+
+  errorClosed() {
+    this.errorMessage = undefined;
+  }
+
+  successClosed() {
+    this.successMessage = undefined;
   }
 }

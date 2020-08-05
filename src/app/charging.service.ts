@@ -17,7 +17,7 @@ import { MachineReport } from './model/machineReport';
 })
 export class ChargingService {
   
-  loggedInUser : Employee = new Employee(1,null,null,null,false,MachineType.LEVEL1,null);
+  loggedInUser : Employee = new Employee(1, null,null,null,false,null,null);
   loggedIn = new BehaviorSubject<boolean>(false);
   dateFormatter = 'yyyy-MM-dd'; 
   private baseUrl = "http://localhost:8080";

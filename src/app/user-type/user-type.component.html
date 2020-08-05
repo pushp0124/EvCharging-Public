@@ -15,7 +15,7 @@
           <mat-icon> account_circle</mat-icon>
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-          <a class="dropdown-item" routerLink="/" routerLinkActive="active">Profile</a>
+          <a class="dropdown-item" (click)="showProfile()" routerLinkActive="active">Profile</a>
           <a class="dropdown-item" (click)="onLogout()">Logout</a>
         </div>
       </li>

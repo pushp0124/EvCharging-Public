@@ -23,6 +23,8 @@ import { AdminStationReportComponent } from './admin-station-report/admin-statio
 import { AdminHomeChildComponent } from './admin-home-child/admin-home-child.component';
 import { UserHomeChildComponent } from './user-home-child/user-home-child.component';
 import { AuthGuard } from './auth-guard.guard';
+import { AdminEmployeeBookingReportComponent } from './admin-employee-booking-report/admin-employee-booking-report.component';
+import { EmployeeProfileComponent } from './employee-profile/employee-profile.component';
 const routes: Routes = [
 
   { path: 'usertype', component: UserTypeComponent },
@@ -35,7 +37,8 @@ const routes: Routes = [
       { path: '', component: UserHomeChildComponent },
       { path: 'userbookslot', component: UserBookSlotComponent },
       { path: 'userbookingsreport', component: UserBookingReportComponent },
-      { path: 'usermybookings', component: UserMyBookingsComponent }
+      { path: 'usermybookings', component: UserMyBookingsComponent },
+      { path: 'profile', component: EmployeeProfileComponent }
     ]
   },
   {
@@ -51,6 +54,8 @@ const routes: Routes = [
       { path: 'admingeneratereport', component: AdminGenerateReportComponent },
       { path: 'adminremovemachine', component: AdminRemoveMachineComponent },
       { path: 'adminviewslot', component: AdminViewSlotComponent },
+      { path: 'profile', component: EmployeeProfileComponent },
+      { path: 'adminemployeebookingreport', component: AdminEmployeeBookingReportComponent }
 
     ]
 

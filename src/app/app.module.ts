@@ -43,6 +43,8 @@ import { UserBookingReportComponent } from './user-booking-report/user-booking-r
 import { AdminStationReportComponent } from './admin-station-report/admin-station-report.component';
 import { AdminHomeChildComponent } from './admin-home-child/admin-home-child.component';
 import { UserHomeChildComponent } from './user-home-child/user-home-child.component';
+import { AdminEmployeeBookingReportComponent } from './admin-employee-booking-report/admin-employee-booking-report.component';
+import { EmployeeProfileComponent } from './employee-profile/employee-profile.component';
 @NgModule({
   entryComponents : [DetailDialogComponent, UserETicketComponent],
   declarations: [
@@ -68,7 +70,9 @@ import { UserHomeChildComponent } from './user-home-child/user-home-child.compon
     AdminStationReportComponent,
     UserBookingReportComponent,
     DetailDialogComponent,
-    MachineReportComponent
+    MachineReportComponent,
+    AdminEmployeeBookingReportComponent,
+    EmployeeProfileComponent
   ],
   imports: [
     BrowserModule,

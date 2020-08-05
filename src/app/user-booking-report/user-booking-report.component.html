@@ -1,1 +1,29 @@
-<p>user-booking-report works!</p>
+<div class="alert alert-danger" *ngIf="errorMessage">
+    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+    <strong>Error </strong>{{errorMessage}}
+</div>
+
+<div class="alert alert-success" *ngIf="successMessage">
+    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+    <strong>Success </strong> {{successMessage}}
+</div>
+
+
+<mat-progress-spinner color="accent" mode="indeterminate" *ngIf="dataLoaded != undefined && !dataLoaded"
+    style="margin:0 auto;">
+</mat-progress-spinner>
+
+<div *ngIf="dataLoaded">
+
+    <div class="alert alert-info" *ngIf="bookings.length == 0">
+        Employee doesn't have any bookings yet!
+    </div>
+
+    <div style="display: block;" class="bar-chart-wrapper" *ngIf="bookings.length > 0">
+        <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
+            [plugins]="barChartPlugins" [legend]="barChartLegend" [chartType]="barChartType">
+        </canvas>
+    </div>
+    <button mat-button mat-raised-button *ngIf="bookings.length > 0" color="primary"
+        onClick="window.print()">Print</button>
+</div>

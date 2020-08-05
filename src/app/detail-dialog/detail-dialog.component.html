@@ -1,11 +1,14 @@
-
-<h2 mat-dialog-title style="text-align: center">Selected Machine Id : {{data.selectedMachineDetailValue.machineId}}</h2>
+<h3 mat-dialog-title style="text-align: center">Selected Machine Id : {{data.machineDetailValue.machineId}}</h3>
 <mat-dialog-content>
- <h4>{{message}}</h4>
-  <div *ngIf = "data.selectedMachineDetailValue.machineStatus">
-
-  </div>
+  <p>Machine Name : {{data.machineDetailValue.machineName}} </p>
+  <p>Machine Starting Date : {{data.machineDetailValue.machineStartingDate}} </p>
+  <p>Machine Current Status : {{data.machineDetailValue.machineCurrentStatus}}</p>
+  <p *ngIf="data.machineDetailValue.machineCurrentStatus == 'BOOKED'">This Machine is booked by employee with employee
+    id : {{data.machineDetailValue.bookedByEmployeeId}} </p>
+  <p *ngIf="data.machineDetailValue.machineCurrentStatus == 'HALTED'"> This machine is currently in halt state, we advise you to visit us at midnight hours on {{data.machineDetailValue.machineStartingDate}} date</p>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
-  <button mat-button *ngFor = "let action of actions; let i = index;" [mat-dialog-close] = "action">{{action}}</button>
+  <button mat-raised-button color="primary" *ngFor="let action of actions; let i = index;"
+    [mat-dialog-close]="action">{{action.message}}</button>
+  <button mat-raised-button color="primary" mat-dialog-close=true>Close</button>
 </mat-dialog-actions>

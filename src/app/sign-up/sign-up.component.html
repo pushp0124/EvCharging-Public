@@ -1,17 +1,18 @@
-<div class="alert alert-danger" *ngIf="errorMessage">
-    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-    <strong>Error </strong>{{errorMessage}}
-</div>
-
-<div class="alert alert-success" *ngIf="successMessage">
-    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-    <strong>Success </strong> {{successMessage}}
-</div>
 
 
 <div class="back" style="overflow: hidden;">
 
 
+    <div class="alert alert-danger" *ngIf="errorMessage">
+        <button type="button" class="close" aria-hidden="true" (click) = "errorClosed()">&times;</button>
+        <strong>Error </strong>{{errorMessage}}
+    </div>
+    
+    <div class="alert alert-success" *ngIf="successMessage">
+        <button type="button" class="close" (click) = "successClosed()" aria-hidden="true">&times;</button>
+        <strong>Success </strong> {{successMessage}}
+    </div>
+    
     <mat-card style="margin: 0 auto; width: 70%;">
 
         <mat-horizontal-stepper linear #stepper>
