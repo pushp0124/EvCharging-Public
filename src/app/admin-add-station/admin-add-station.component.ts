@@ -11,9 +11,9 @@ import { ChargingService } from '../charging.service';
 })
 export class AdminAddStationComponent implements OnInit {
   
-//when will this city and campuslocation value get updated? 
-  error:string;
+  errorMessage : string;
 
+  successMessage : string;
   constructor(private chargingService:ChargingService,private router: Router) { }
 
   ngOnInit() {
@@ -23,11 +23,18 @@ export class AdminAddStationComponent implements OnInit {
     let city = stationForm.value.city;
     let campusLocation = stationForm.value.campusLocation;
     this.chargingService.addStation(city,campusLocation).subscribe((station)=> {
-      console.log("Station added successfully");
-     
+      this.successMessage = "Station added successfully";
     }, (stationError)=> {
-      alert(stationError.error.message);
+       this.errorMessage = stationError.error.message;
     })
+  }
+
+  errorClosed() {
+    this.errorMessage = undefined;
+  }
+
+  successClosed() {
+    this.successMessage = undefined;
   }
 
  

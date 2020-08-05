@@ -1,51 +1,48 @@
+<div style="display: flex; justify-content: space-between;">
+  <mat-form-field class="example-full-width">
+    <input matInput [min]="minFromDate" [matDatepicker]="picker1" placeholder="Choose from date"
+      (dateInput)="onFromDateChange($event.value)" readonly>
+    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+    <mat-datepicker #picker1></mat-datepicker>
+  </mat-form-field>
 
-<div style="display: flex; justify-content: space-between;"> 
-    <mat-form-field class="example-full-width">
-        <input matInput [min]="minFromDate" [matDatepicker]="picker1" placeholder="Choose from date" (dateInput)="onFromDateChange($event.value)" readonly>
-        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-        <mat-datepicker #picker1></mat-datepicker>
-      </mat-form-field>
-    
-      <mat-form-field class="example-full-width">
-        <input matInput [min]="minToDate" [matDatepicker]="picker2" placeholder="Choose to date" (dateInput)="onToDateChange($event.value)" [(ngModel)] = "selectedToDate" readonly>
-        <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-        <mat-datepicker #picker2></mat-datepicker>
-      </mat-form-field>
-    
- </div>
+  <mat-form-field class="example-full-width">
+    <input matInput [min]="minToDate" [matDatepicker]="picker2" placeholder="Choose to date"
+      (dateInput)="onToDateChange($event.value)" [(ngModel)]="selectedToDate" readonly>
+    <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+    <mat-datepicker #picker2></mat-datepicker>
+  </mat-form-field>
 
-<mat-grid-list cols="2" rowheight = "2:1" [gutterSize]="'10px'">
-  <mat-grid-tile *ngFor = "let report of stationsReport;let i = index;">
+</div>
 
-    <mat-card>
-        <mat-card-header style="justify-content: center;">
+
+    <mat-grid-list cols="2" rowheight="2:1">
+      <mat-grid-tile *ngFor="let report of stationsReport;let i = index;">
+
+        <mat-card>
+          <mat-card-header style="justify-content: center;">
             <mat-card-title>Station : {{report.station.stationId}}</mat-card-title>
             <mat-card-subtitle>{{report.station.city}} - {{report.station.campusLocation}}</mat-card-subtitle>
           </mat-card-header>
-              <canvas baseChart
-                [data]="doughnutChartList[i]"
-                [labels]="doughnutChartLabels"
-                [chartType]="doughnutChartType"
-                class = "bar-chart-wrapper">
-              </canvas>
+          <canvas baseChart [data]="doughnutChartList[i]" [labels]="doughnutChartLabels" [chartType]="doughnutChartType"
+            class="bar-chart-wrapper">
+          </canvas>
 
-              <mat-card-content>
-               
-                <br>
-                 <h4>Current Report </h4>
-                 Total Machines : {{report.totalMachinesCount}}
-                 <br>
-                 Active Machines : {{report.activeMachinesCount}}
-                 <br>
-                 Halted Machines : {{report.haltedMachinesCount}}
-                 <br>
-                 Removed Machines : {{report.removedMachinesCount}}
-                 <br>
-               
-              </mat-card-content>
-    </mat-card>  
-  </mat-grid-tile>
- 
-</mat-grid-list>
+          <mat-card-content>
 
+            <br>
+            <h4>Current Report </h4>
+            Total Machines : {{report.totalMachinesCount}}
+            <br>
+            Active Machines : {{report.activeMachinesCount}}
+            <br>
+            Halted Machines : {{report.haltedMachinesCount}}
+            <br>
+            Removed Machines : {{report.removedMachinesCount}}
+            <br>
 
+          </mat-card-content>
+        </mat-card>
+      </mat-grid-tile>
+
+    </mat-grid-list>

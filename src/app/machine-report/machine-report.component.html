@@ -41,7 +41,7 @@
                        <br>
                        <h4>Current Report </h4>
                      
-                       Machine Current Status : {{report.machine.machineStatus}}
+                       Machine Current Status : <i class = "blink" [style.backgroundColor] = "report.machine.machineStatus == 'ACTIVE' ? 'lightgreen' : report.machine.machineStatus == 'HALTED' ? 'lightcoral' :'red'"> {{report.machine.machineStatus}} </i>
                        <br>
                        StartingDate : {{report.machine.startingDate}}
                        <br>

@@ -17,9 +17,9 @@ import { NgForm } from '@angular/forms';
 export class AdminEmployeeBookingReportComponent implements OnInit {
 
   bookings: Booking[];
-  dataLoaded ;
-  errorMessage : string
-  successMessage : string;
+  dataLoaded;
+  errorMessage: string
+  successMessage: string;
   public barChartOptions: ChartOptions = {
     responsive: true,
     // We use these empty structures as placeholders for dynamic theming.
@@ -41,8 +41,8 @@ export class AdminEmployeeBookingReportComponent implements OnInit {
         }
       }
     },
-    legend : {
-      position : "bottom"
+    legend: {
+      position: "bottom"
     }
 
   };
@@ -76,11 +76,11 @@ export class AdminEmployeeBookingReportComponent implements OnInit {
   constructor(private chargingService: ChargingService, private datePipe: DatePipe) { }
 
   ngOnInit(): void {
-    
+
   }
 
 
-  generateEmployeeReport(reportForm : NgForm) {
+  generateEmployeeReport(reportForm: NgForm) {
     this.barChartLabels = []
     this.dataLoaded = false
     this.barChartData = [
@@ -91,14 +91,14 @@ export class AdminEmployeeBookingReportComponent implements OnInit {
       {
         data: [],
         label: 'Booking Status CANCELLED',
-  
+
       },
       {
         data: [],
         label: 'Booking Status RESCHEDULED',
       },
-  
-  
+
+
     ];
     let employeeId = reportForm.value.empId;
     this.chargingService.getEmployeeAllBookings(employeeId).subscribe((bookings) => {
@@ -116,13 +116,13 @@ export class AdminEmployeeBookingReportComponent implements OnInit {
         })
         if (index == -1) {
           this.barChartLabels.push(transformedDate);
-         
-            this.barChartData[0].data.push(0);
-          
-            this.barChartData[1].data.push(0);;
-         
-            this.barChartData[2].data.push(0);
-          
+
+          this.barChartData[0].data.push(0);
+
+          this.barChartData[1].data.push(0);;
+
+          this.barChartData[2].data.push(0);
+
           index = this.barChartLabels.length - 1;
         }
         if (booking.status == BookingStatus.BOOKED) {
@@ -142,22 +142,25 @@ export class AdminEmployeeBookingReportComponent implements OnInit {
         } else {
           this.barChartData[2].data = data;
         }
-       console.log(this.barChartData)
-        
+        console.log(this.barChartData)
+
       });
       // this.barChartData[0].data.push(0)
       // this.barChartData[1].data.push(0)
       // this.barChartData[2].data.push(0)
       console.log(this.barChartLabels)
+      this.errorClosed()
+      this.successClosed()
       this.dataLoaded = true
 
     }, (reportError) => {
+      this.dataLoaded = true
       this.errorMessage = reportError.error.message
     })
 
   }
   sortBookings(bookings: Booking[]) {
-    
+
     let sortedArray = bookings.sort((booking1, booking2) => {
       if (booking1.bookedDate < booking2.bookedDate) {
         return -1;
@@ -179,17 +182,14 @@ export class AdminEmployeeBookingReportComponent implements OnInit {
     console.log(event, active);
   }
 
-  public randomize(): void {
-    // Only Change 3 values
-    const data = [
-      Math.round(Math.random() * 100),
-      59,
-      80,
-      (Math.random() * 100),
-      56,
-      (Math.random() * 100),
-      40];
-    this.barChartData[0].data = data;
+
+  errorClosed() {
+    this.errorMessage = undefined;
   }
+
+  successClosed() {
+    this.successMessage = undefined;
+  }
+
 
 }

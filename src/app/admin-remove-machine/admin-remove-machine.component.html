@@ -1,84 +1,140 @@
+<div style="display: flex; justify-content: space-between; margin-top: 30px;margin-bottom: 25px;">
+  <mat-form-field>
+    <mat-label>Select Station</mat-label>
+    <mat-select [(value)]="selectedStation" (selectionChange)="stationSelectionListClicked($event.value)">
+      <mat-option *ngFor="let station of stations" [value]="station">{{station.city}} {{station.campusLocation}}
+      </mat-option>
 
-<div style="display: flex; justify-content: space-between; margin-top: 30px;margin-bottom: 25px;"> 
-        <mat-form-field>
-            <mat-label>Select Station</mat-label>
-            <mat-select [(value)]="selectedStation" (selectionChange)="stationSelectionListClicked($event.value)">
-              <mat-option *ngFor = "let station of stations" [value]="station">{{station.city}} {{station.campusLocation}}</mat-option>
-        
-            </mat-select>
-          </mat-form-field>
-        
-          <mat-form-field *ngIf = "selectedViewType == 0">
-            <mat-label>Select Machine Type</mat-label>
-            <mat-select [(value)]="selectedMachineType" (selectionChange)="levelSelectionListClicked($event.value)">
-              <mat-option *ngFor = "let type of machineTypes" [value]="type">{{type}}</mat-option>
-           </mat-select>
-          </mat-form-field>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field *ngIf="selectedViewType == 0">
+    <mat-label>Select Machine Type</mat-label>
+    <mat-select [(value)]="selectedMachineType" (selectionChange)="levelSelectionListClicked($event.value)">
+      <mat-option *ngFor="let type of machineTypes" [value]="type">{{type}}</mat-option>
+    </mat-select>
+  </mat-form-field>
 </div>
 <mat-form-field>
   <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
 </mat-form-field>
 
 <div class="mat-elevation-z8">
-<table mat-table [dataSource]="dataSource">
+  <table mat-table [dataSource]="dataSource">
 
- 
-  <ng-container matColumnDef="machineId">
-    <th mat-header-cell *matHeaderCellDef style="text-align: center"  mat-sort-header> Machine Id </th>
-    <td mat-cell *matCellDef="let element"> {{element.machineId}} </td>
-  </ng-container>
 
-  <ng-container matColumnDef="machineType">
-    <th mat-header-cell *matHeaderCellDef style="text-align: center" > Machine Type </th>
-    <td mat-cell *matCellDef="let element"> {{element.machineType}} </td>
-  </ng-container>
+    <ng-container matColumnDef="machineId">
+      <th mat-header-cell *matHeaderCellDef style="text-align: center" mat-sort-header> Machine Id </th>
+      <td mat-cell *matCellDef="let element"> {{element.machineId}} </td>
+    </ng-container>
 
-  <ng-container matColumnDef="city">
-    <th mat-header-cell *matHeaderCellDef style="text-align: center" >City</th>
-    <td mat-cell *matCellDef="let element"> {{element.machineStation.city}} </td>
-  </ng-container>
+    <ng-container matColumnDef="machineType">
+      <th mat-header-cell *matHeaderCellDef style="text-align: center"> Machine Type </th>
+      <td mat-cell *matCellDef="let element"> {{element.machineType}} </td>
+    </ng-container>
 
-  <ng-container matColumnDef="campus">
-    <th mat-header-cell *matHeaderCellDef style="text-align: center"  >Campus Location</th>
-    <td mat-cell *matCellDef="let element"> {{element.machineStation.campusLocation}} </td>
-  </ng-container>
+    <ng-container matColumnDef="city">
+      <th mat-header-cell *matHeaderCellDef style="text-align: center">City</th>
+      <td mat-cell *matCellDef="let element"> {{element.machineStation.city}} </td>
+    </ng-container>
 
-  <ng-container matColumnDef="startTime" >
-    <th mat-header-cell *matHeaderCellDef style="text-align: center" > Start Time </th>
-    <td mat-cell *matCellDef="let element"> {{element.startTime}} </td>
-  </ng-container>
+    <ng-container matColumnDef="campus">
+      <th mat-header-cell *matHeaderCellDef style="text-align: center">Campus Location</th>
+      <td mat-cell *matCellDef="let element"> {{element.machineStation.campusLocation}} </td>
+    </ng-container>
 
-  <ng-container matColumnDef="endTime" >
-    <th mat-header-cell *matHeaderCellDef style="text-align: center" > End Time </th>
-    <td mat-cell *matCellDef="let element"> {{element.endTime}} </td>
-  </ng-container>
+    <ng-container matColumnDef="startTime">
+      <th mat-header-cell *matHeaderCellDef style="text-align: center"> Start Time </th>
+      <td mat-cell *matCellDef="let element"> {{element.startTime}} </td>
+    </ng-container>
 
-  <ng-container matColumnDef="startDate">
-    <th mat-header-cell *matHeaderCellDef style="text-align: center" > Start Date </th>
-    <td mat-cell *matCellDef="let element"> {{element.startingDate}} </td>
-  </ng-container>
+    <ng-container matColumnDef="endTime">
+      <th mat-header-cell *matHeaderCellDef style="text-align: center"> End Time </th>
+      <td mat-cell *matCellDef="let element"> {{element.endTime}} </td>
+    </ng-container>
 
-  <tr mat-header-row *matHeaderRowDef="displayedColumns" style="background-color:lightgrey"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click) = "machineRowClicked(row)" [style.background-color] = "row.machineStatus == 'HALTED' ? 'lightpink' : (row.machineStatus == 'REMOVED' ?  'lightcoral' : 'lightgreen')"></tr>
-</table>
+    <ng-container matColumnDef="startDate">
+      <th mat-header-cell *matHeaderCellDef style="text-align: center"> Start Date </th>
+      <td mat-cell *matCellDef="let element"> {{element.startingDate}} </td>
+    </ng-container>
 
-<mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns" style="background-color:lightgrey"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="machineRowClicked(row)"
+      [style.background-color]="row.machineStatus == 'HALTED' ? 'lightpink' : (row.machineStatus == 'REMOVED' ?  'lightcoral' : 'lightgreen')">
+    </tr>
+  </table>
+
+  <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
 
 </div>
 
 
- 
-<div *ngIf = "selectedMachine != undefined">
-  <div style="display: block;" class="bar-chart-wrapper" >
-     <canvas baseChart
-       [datasets]="barChartData"
-       [labels]="barChartLabels"
-       [options]="barChartOptions"
-       [plugins]="barChartPlugins"
-       [legend]="barChartLegend"
-       [chartType]="barChartType"
-       [colors] = "barChartColors">
-     </canvas>
-   </div>
-   <button mat-button mat-raised-button color="primary"  onClick="window.print()">Print</button>
- </div>
+
+<div *ngIf="selectedMachine != undefined && dataLoaded">
+  <div style="display: block;" class="bar-chart-wrapper" *ngIf="bookings.length > 0">
+    <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
+      [plugins]="barChartPlugins" [legend]="barChartLegend" [chartType]="barChartType" [colors]="barChartColors">
+    </canvas>
+  </div>
+  <button mat-button mat-raised-button color="primary" onClick="window.print()"
+    *ngIf="bookings.length > 0">Print</button>
+
+  <div class="table-responsive">
+    <table class="table table-hover table-bordered">
+      <thead class="thead-dark">
+        <tr>
+          <th>Machine Id</th>
+          <th>Employee Id</th>
+          <th>Employee Name</th>
+          <th>Employee Contact No</th>
+          <th>Booking Number</th>
+          <th>Booking Date</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        <tr *ngFor="let booking of bookings">
+          <td>{{booking.bookedMachine.machineId}}</td>
+          <td>{{booking.bookingByEmployee.employeeId}}</td>
+          <td>{{booking.bookingByEmployee.empName}}</td>
+          <td>{{booking.bookingByEmployee.phoneNo}}</td>
+          <td>{{booking.ticketNo}}</td>
+          <td>{{booking.bookedDate}}</td>
+        </tr>
+        <tr *ngIf="bookings.length == 0">
+          <td colspan="6">
+            No Bookings found for machine with machine Id {{selectedMachine.machineId}}
+          </td>
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+
+  <mat-tab-group mat-stretch-tabs>
+    <mat-tab label="Modify Machine">
+
+
+    </mat-tab>
+    <mat-tab label="Halt Machine">
+      
+      <div class="alert alert-info">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <strong>Information </strong> Please note that normal maintenance will halt the machine for 7 days from the current date, if you want to halt for more or less than the days then modify machine with the specified date.
+      </div>
+      
+        <button  class="btn btn-primary btn-raised"> Halt Machine For Normal Maintenance </button>
+
+    </mat-tab>
+    <mat-tab label="Resume Machine">
+        <button  class="btn btn-primary btn-raised"> Resume Machine </button>
+
+    </mat-tab>
+    <mat-tab label="Remove Machine">
+
+        <button  class="btn btn-primary btn-raised"> Remove Machine </button>
+    </mat-tab>
+
+  </mat-tab-group>
+
+</div>
