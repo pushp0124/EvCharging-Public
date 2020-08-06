@@ -115,24 +115,149 @@
     <mat-tab label="Modify Machine">
 
 
-    </mat-tab>
-    <mat-tab label="Halt Machine">
-      
-      <div class="alert alert-info">
-        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-        <strong>Information </strong> Please note that normal maintenance will halt the machine for 7 days from the current date, if you want to halt for more or less than the days then modify machine with the specified date.
+      <div *ngIf = "bookings.length == 0">
+          <div class="alert alert-danger" *ngIf="errorMessage">
+              <button type="button" class="close" aria-hidden="true" (click)="errorClosed()">&times;</button>
+              <strong>Error </strong>{{errorMessage}}
+            </div>
+            
+            <div class="alert alert-success" *ngIf="successMessage">
+              <button type="button" class="close" (click)="successClosed()" aria-hidden="true">&times;</button>
+              <strong>Success </strong> {{successMessage}}
+            </div>
+            
+            <div class="alert alert-info" *ngIf="infoMessage">
+              <button type="button" class="close" (click)="infoClosed()" aria-hidden="true">&times;</button>
+              {{infoMessage}}
+            </div>
+          <mat-form-field>
+              <mat-label>Select Station</mat-label>
+              <mat-select [(ngModel)]="modifySelectedStation" disabled>
+                <mat-option *ngFor="let station of stations" [value]="station">{{station.city}} {{station.campusLocation}}
+                </mat-option>
+            
+              </mat-select>
+            </mat-form-field>
+            
+            <mat-card style="margin: 5px auto; width: 50%">
+              
+              <form #machinesForm="ngForm" (ngSubmit)="addMachine()">
+            
+                <div class="form-group">
+            
+                  Select Slot Duration :
+                  <mat-form-field>
+                    <mat-label>Select Duration</mat-label>
+                    <mat-select name="slotDurations" id="slotDurations" [(ngModel)]="selectedMachineSlot" (selectionChange) = "selectSlotDuration()">
+                      <mat-option *ngFor="let duration of slotDurations" [value]="duration">{{duration}}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+            
+                </div>
+                <div class="form-group">
+            
+                  Select Machine Type :
+                  <mat-form-field>
+                    <mat-label>Select Machine Type</mat-label>
+                    <mat-select name="machineTypes" id="machineTypes" [(ngModel)]="modifySelectedMachineType">
+                      <mat-option *ngFor="let type of machineTypes" [value]="type">{{type}}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+                <div class="form-group">
+                  Select Machine Starting Date :
+                  <mat-form-field class="example-full-width">
+                    <input matInput [min]="minDate" [matDatepicker]="picker1" placeholder="Select Starting Date"
+                      (dateInput)="onStartingDateChange()" readonly required name="startingDate" id="startingDate"
+                      [(ngModel)]="selectedStartDate">
+                    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                    <mat-datepicker #picker1></mat-datepicker>
+                  </mat-form-field>
+                </div>
+                <div class="form-group">
+            
+                  Select Machine Start Timings :
+                  <mat-form-field>
+                    <mat-label>Select Start Time</mat-label>
+                    <mat-select name="startTime" id="startTime" [(ngModel)]="selectedStartTime"
+                      (selectionChange)="startTimeSelected()">
+                      <ng-container *ngIf="selectedMachineSlot == 'SIXTY'">
+                        <mat-option *ngFor="let time of sixtyMinsStartTime;" [value]="time">{{time}}</mat-option>
+                      </ng-container>
+                      <ng-container *ngIf="selectedMachineSlot == 'THIRTY'">
+                        <mat-option *ngFor="let time of thirtyMinsStartTime; " [value]="time">{{time}}</mat-option>
+                      </ng-container>
+                      <ng-container *ngIf="selectedMachineSlot == 'FIFTEEN'">
+                        <mat-option *ngFor="let time of fifteenMinsStartTime; " [value]="time">{{time}}</mat-option>
+                      </ng-container>
+                    </mat-select>
+                  </mat-form-field>
+            
+                </div>
+            
+                <div class="form-group">
+            
+                  Select Machine End Timings :
+                  <mat-form-field>
+                    <mat-label>Select End Time</mat-label>
+                    <mat-select name="endTime" id="endTime" [(ngModel)]="selectedEndTime"  (selectionChange)="endTimeSelected()">
+                        <ng-container *ngIf="selectedMachineSlot == 'SIXTY'">
+                            <mat-option *ngFor="let time of sixtyMinsEndTime | slice : startEndTimeIndex" [value]="time">{{time}}</mat-option>
+                          </ng-container>
+                          <ng-container *ngIf="selectedMachineSlot == 'THIRTY'">
+                            <mat-option *ngFor="let time of thirtyMinsEndTime | slice : startEndTimeIndex" [value]="time">{{time}}</mat-option>
+                          </ng-container>
+                          <ng-container *ngIf="selectedMachineSlot == 'FIFTEEN'">
+                            <mat-option *ngFor="let time of fifteenMinsEndTime | slice : startEndTimeIndex" [value]="time">{{time}}</mat-option>
+                          </ng-container>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+                <button type="submit" class="btn btn-primary btn-raised" data-toggle="modal" data-target="#exampleModalCenter"
+                  [disabled]="!machinesForm.valid"> Add Machine </button>
+            
+              </form>
+            </mat-card>
+
+
+
+
       </div>
-      
-        <button  class="btn btn-primary btn-raised"> Halt Machine For Normal Maintenance </button>
+      <div class="alert alert-danger" *ngIf="bookings.length > 0">
+        This machine has active bookings. This can be modified only if the bookings are cancelled or rescheduled. Contact
+        to the above employees for the same.
+      </div>
 
     </mat-tab>
-    <mat-tab label="Resume Machine">
-        <button  class="btn btn-primary btn-raised"> Resume Machine </button>
+    <mat-tab label="Halt Machine" *ngIf="selectedMachine.machineStatus == 'ACTIVE'">
+      <div *ngIf="bookings.length == 0">
+        <div class="alert alert-info">
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+          <strong>Information </strong> Please note that normal maintenance will halt the machine for 7 days from the
+          current date, if you want to halt for more or less than the days then modify machine with the specified date.
+        </div>
+
+        <button class="btn btn-primary btn-raised"> Halt Machine For Normal Maintenance </button>
+      </div>
+      <div>
+
+        <div class="alert alert-danger" *ngIf="bookings.length > 0">
+          This machine has active bookings. This can be halted only if the bookings are cancelled or rescheduled.
+          Contact to the above employees for the same.
+        </div>
+      </div>
+    </mat-tab>
+    <mat-tab label="Resume Machine" *ngIf="selectedMachine.machineStatus == 'HALTED'">
+      <button class="btn btn-primary btn-raised"> Resume Machine </button>
 
     </mat-tab>
     <mat-tab label="Remove Machine">
 
-        <button  class="btn btn-primary btn-raised"> Remove Machine </button>
+      <button class="btn btn-primary btn-raised" *ngIf = "bookings.length == 0"> Remove Machine </button>
+      <div class="alert alert-danger" *ngIf="bookings.length > 0">
+          This machine has active bookings. This can be halted only if the bookings are cancelled or rescheduled.
+          Contact to the above employees for the same.
+        </div>
     </mat-tab>
 
   </mat-tab-group>

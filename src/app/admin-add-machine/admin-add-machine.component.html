@@ -31,7 +31,7 @@
       Select Slot Duration :
       <mat-form-field>
         <mat-label>Select Duration</mat-label>
-        <mat-select name="slotDurations" id="slotDurations" [(ngModel)]="selectedMachineSlot">
+        <mat-select name="slotDurations" id="slotDurations" [(ngModel)]="selectedMachineSlot" (selectionChange) = "selectSlotDuration()">
           <mat-option *ngFor="let duration of slotDurations" [value]="duration">{{duration}}</mat-option>
         </mat-select>
       </mat-form-field>
@@ -62,8 +62,17 @@
       Select Machine Start Timings :
       <mat-form-field>
         <mat-label>Select Start Time</mat-label>
-        <mat-select name="startTime" id="startTime" [(ngModel)]="selectedStartTime">
-          <mat-option *ngFor="let time of startTime" [value]="time">{{time}}</mat-option>
+        <mat-select name="startTime" id="startTime" [(ngModel)]="selectedStartTime"
+          (selectionChange)="startTimeSelected()">
+          <ng-container *ngIf="selectedMachineSlot == 'SIXTY'">
+            <mat-option *ngFor="let time of sixtyMinsStartTime;" [value]="time">{{time}}</mat-option>
+          </ng-container>
+          <ng-container *ngIf="selectedMachineSlot == 'THIRTY'">
+            <mat-option *ngFor="let time of thirtyMinsStartTime; " [value]="time">{{time}}</mat-option>
+          </ng-container>
+          <ng-container *ngIf="selectedMachineSlot == 'FIFTEEN'">
+            <mat-option *ngFor="let time of fifteenMinsStartTime; " [value]="time">{{time}}</mat-option>
+          </ng-container>
         </mat-select>
       </mat-form-field>
 
@@ -74,8 +83,16 @@
       Select Machine End Timings :
       <mat-form-field>
         <mat-label>Select End Time</mat-label>
-        <mat-select name="endTime" id="endTime" [(ngModel)]="selectedEndTime">
-          <mat-option *ngFor="let time of endTime" [value]="time">{{time}}</mat-option>
+        <mat-select name="endTime" id="endTime" [(ngModel)]="selectedEndTime"  (selectionChange)="endTimeSelected()">
+            <ng-container *ngIf="selectedMachineSlot == 'SIXTY'">
+                <mat-option *ngFor="let time of sixtyMinsEndTime | slice : startEndTimeIndex" [value]="time">{{time}}</mat-option>
+              </ng-container>
+              <ng-container *ngIf="selectedMachineSlot == 'THIRTY'">
+                <mat-option *ngFor="let time of thirtyMinsEndTime | slice : startEndTimeIndex" [value]="time">{{time}}</mat-option>
+              </ng-container>
+              <ng-container *ngIf="selectedMachineSlot == 'FIFTEEN'">
+                <mat-option *ngFor="let time of fifteenMinsEndTime | slice : startEndTimeIndex" [value]="time">{{time}}</mat-option>
+              </ng-container>
         </mat-select>
       </mat-form-field>
     </div>

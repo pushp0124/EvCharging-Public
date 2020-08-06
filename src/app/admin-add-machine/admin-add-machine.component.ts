@@ -38,10 +38,22 @@ export class AdminAddMachineComponent implements OnInit {
     errorMessage: string;
     successMessage: string;
     infoMessage: string;
+
+    fifteenMinsStartTime: string[];
+    fifteenMinsEndTime: string[];
+
+    thirtyMinsStartTime: string[];
+    thirtyMinsEndTime: string[];
+
+    sixtyMinsStartTime: string[];
+    sixtyMinsEndTime: string[];
+
+    startEndTimeIndex = 1;
     constructor(private chargingService: ChargingService, private router: Router) { }
 
     ngOnInit() {
         this.initialiseTime();
+        this.selectSlotDuration()
         this.chargingService.getAllStations().subscribe((stations) => {
             console.log(stations);
             this.selectedStation = stations[0];
@@ -73,49 +85,57 @@ export class AdminAddMachineComponent implements OnInit {
     selectMachineType(machineType: MachineType) {
         this.selectedMachineType = machineType;
     }
-    selectSlotDuration(slotDuration: SlotDuration) {
-        this.initialiseTime();
-        this.selectedMachineSlot = slotDuration;
+    selectSlotDuration() {
+
+
+        if (this.selectedMachineSlot == SlotDuration.SIXTY) {
+            this.selectedStartTime = this.sixtyMinsStartTime[0];
+            this.selectedEndTime = this.sixtyMinsEndTime[this.sixtyMinsEndTime.length - 1];
+
+        } else if (this.selectedMachineSlot == SlotDuration.THIRTY) {
+            this.selectedStartTime = this.thirtyMinsStartTime[0];
+            this.selectedEndTime = this.thirtyMinsEndTime[this.thirtyMinsEndTime.length - 1];
+
+        } else {
+            this.selectedStartTime = this.fifteenMinsStartTime[0];
+            this.selectedEndTime = this.fifteenMinsEndTime[this.fifteenMinsEndTime.length - 1];
+
+        }
+       
     }
 
     initialiseTime() {
-        if (this.selectedMachineSlot == SlotDuration.THIRTY) {
-            this.startTime = [];
-            this.endTime = [];
 
-            for (let hours = 0; hours < 24; hours++) {
-                for (let mins = 0; mins < 60; mins += 30) {
-                    this.startTime.push(this.convertNumberToTwoDigit(hours) + ":" + this.convertNumberToTwoDigit(mins));
-                    this.endTime.push(this.convertNumberToTwoDigit(hours) + ":" + this.convertNumberToTwoDigit(mins));
+        this.thirtyMinsStartTime = [];
+        this.thirtyMinsEndTime = [];
 
-                }
-            }
-        } else if (this.selectedMachineSlot == SlotDuration.SIXTY) {
+        for (let hours = 0; hours < 24; hours++) {
+            for (let mins = 0; mins < 60; mins += 30) {
+                this.thirtyMinsStartTime.push(this.convertNumberToTwoDigit(hours) + ":" + this.convertNumberToTwoDigit(mins));
+                this.thirtyMinsEndTime.push(this.convertNumberToTwoDigit(hours) + ":" + this.convertNumberToTwoDigit(mins));
 
-            this.startTime = [];
-            this.endTime = [];
-            for (let hours = 0; hours < 24; hours++) {
-                this.startTime.push(this.convertNumberToTwoDigit(hours) + ":" + this.convertNumberToTwoDigit(0));
-                this.endTime.push(this.convertNumberToTwoDigit(hours) + ":" + this.convertNumberToTwoDigit(0));
-            }
-        } else {
-
-            this.startTime = [];
-            this.endTime = [];
-            for (let hours = 0; hours < 24; hours++) {
-                for (let mins = 0; mins < 60; mins += 15) {
-                    //two zeros are to be done 4:00
-                    this.startTime.push(this.convertNumberToTwoDigit(hours) + ":" + this.convertNumberToTwoDigit(mins));
-                    this.endTime.push(this.convertNumberToTwoDigit(hours) + ":" + this.convertNumberToTwoDigit(mins));
-
-                }
             }
         }
 
-        this.selectedStartTime = this.startTime[0];
-        this.selectedEndTime = this.endTime[0];
+        this.sixtyMinsStartTime = [];
+        this.sixtyMinsEndTime = [];
+
+        for (let hours = 0; hours < 24; hours++) {
+            this.sixtyMinsStartTime.push(this.convertNumberToTwoDigit(hours) + ":" + this.convertNumberToTwoDigit(0));
+            this.sixtyMinsEndTime.push(this.convertNumberToTwoDigit(hours) + ":" + this.convertNumberToTwoDigit(0));
+        }
 
 
+        this.fifteenMinsStartTime = [];
+        this.fifteenMinsEndTime = [];
+        for (let hours = 0; hours < 24; hours++) {
+            for (let mins = 0; mins < 60; mins += 15) {
+                //two zeros are to be done 4:00
+                this.fifteenMinsStartTime.push(this.convertNumberToTwoDigit(hours) + ":" + this.convertNumberToTwoDigit(mins));
+                this.fifteenMinsEndTime.push(this.convertNumberToTwoDigit(hours) + ":" + this.convertNumberToTwoDigit(mins));
+
+            }
+        }
     }
 
     convertNumberToTwoDigit(digit: number) {
@@ -130,14 +150,29 @@ export class AdminAddMachineComponent implements OnInit {
 
     }
 
-    selectStartTime(startTimeSeletedIndex: number) {
+    startTimeSelected() {
 
-        this.selectedStartTime = this.startTime[startTimeSeletedIndex];
-
+        let startTimeSelectedIndex = 0;
+        if (this.selectedMachineSlot == SlotDuration.SIXTY) {
+              startTimeSelectedIndex =  this.sixtyMinsStartTime.findIndex((time) => {
+                 return this.selectedStartTime == time;
+             })
+          
+            
+        } else if (this.selectedMachineSlot == SlotDuration.THIRTY) {
+            startTimeSelectedIndex =  this.thirtyMinsStartTime.findIndex((time) => {
+                return this.selectedStartTime == time;
+            })
+        } else {
+            startTimeSelectedIndex =  this.fifteenMinsStartTime.findIndex((time) => {
+                return this.selectedStartTime == time;
+            })
+        }
+        this.startEndTimeIndex = startTimeSelectedIndex  + 1;
     }
 
-    selectEndTime(endTimeSeletedIndex: number) {
-        this.selectedEndTime = this.endTime[endTimeSeletedIndex];
+    endTimeSelected() {
+        // this.selectedEndTime = this.endTime[endTimeSeletedIndex];
 
     }
 

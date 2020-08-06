@@ -25,3 +25,12 @@ table {
   overflow-x: scroll;
 }
 
+:host ::ng-deep .mat-tab-body-wrapper {
+  height: 500px;
+
+}
+
+:host ::ng-deep .mat-tab-body.mat-tab-body-active {
+  height: 500px;
+
+}

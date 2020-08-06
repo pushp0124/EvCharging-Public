@@ -11,6 +11,8 @@ import { DatePipe } from '@angular/common';
 import { Booking } from '../model/booking';
 import * as pluginDataLabels from 'chartjs-plugin-datalabels';
 import { BookingStatus } from '../model/bookingStatus';
+import { MachineStatus } from '../model/machineStatus';
+import { SlotDuration } from '../model/slotDuration';
 
 @Component({
   selector: 'app-admin-remove-machine',
@@ -110,6 +112,12 @@ export class AdminRemoveMachineComponent implements OnInit {
   machineRowClicked(clickedMachine: Machine) {
     this.dataLoaded = false
     this.selectedMachine = clickedMachine;
+    
+    if(this.selectedMachine.machineStatus == MachineStatus.REMOVED) {
+      return
+    }
+
+    this.initialiseModifyMachine()
     let fromDate = new Date();
     let toDate = new Date(fromDate.getFullYear() + 50, fromDate.getMonth(), fromDate.getDate())
     let transformedFromDate = this.datePipe.transform(fromDate, this.chargingService.dateFormatter);
@@ -117,10 +125,14 @@ export class AdminRemoveMachineComponent implements OnInit {
 
     this.barChartLabels = [];
     this.barChartData[0].data = []
+
+    
+
     this.chargingService.generateMachineBookingsReport(transformedFromDate, transformedToDate, this.selectedMachine.machineId).subscribe((bookings) => {
 
       this.bookings = this.sortAndFilterBookings(bookings);
 
+      
       var data;
       console.log(this.bookings)
       this.bookings.forEach(booking => {
@@ -174,5 +186,192 @@ export class AdminRemoveMachineComponent implements OnInit {
   public chartHovered({ event, active }: { event: MouseEvent, active: {}[] }): void {
     console.log(event, active);
   }
+
+
+
+
+
+
+
+
+  //modify machine
+  startTime: string[] = [];
+  endTime: string[] = [];
+
+  slotDurations = [SlotDuration.SIXTY, SlotDuration.THIRTY, SlotDuration.FIFTEEN];
+  //initialise
+  modifySelectedStation: Station;
+  selectedStartDate: Date;
+  modifySelectedMachineType: MachineType;
+  selectedMachineSlot: SlotDuration;
+  selectedStartTime: string;
+  selectedEndTime: string;
+  modifySelectedMachineStatus: MachineStatus;
+
+  minDate = new Date();
+
+  errorMessage: string;
+  successMessage: string;
+  infoMessage: string;
+
+  fifteenMinsStartTime: string[];
+  fifteenMinsEndTime: string[];
+
+  thirtyMinsStartTime: string[];
+  thirtyMinsEndTime: string[];
+
+  sixtyMinsStartTime: string[];
+  sixtyMinsEndTime: string[];
+
+  startEndTimeIndex = 1;
+
+  initialiseModifyMachine() {
+
+    console.log(this.selectedMachine)
+    this.modifySelectedStation = this.selectedMachine.machineStation;
+    this.selectedStartDate = this.selectedMachine.startingDate;
+    this.modifySelectedMachineType = this.selectedMachine.machineType
+    this.selectedMachineSlot = this.selectedMachine.slotDuration
+    this.modifySelectedMachineStatus = this.selectedMachine.machineStatus;
+    //stat time, and end time not initialised 
+    this.initialiseTime();
+    this.selectSlotDuration()
+  
+
+  }
+
+  modifyMachine() {
+
+    this.selectedMachine.slotDuration = this.selectedMachineSlot
+    this.selectedMachine.machineType = this.modifySelectedMachineType
+    this.selectedMachine.startingDate = this.selectedStartDate
+    this.selectedMachine.startTime = this.selectedStartTime
+    this.selectedMachine.endTime = this.selectedEndTime
+    this.chargingService.modifyMachine(this.selectedMachine).subscribe((machines) => {
+      this.successMessage = "Machine Modified Successfully"
+    }, (machineModifyError) => {
+      this.errorMessage = machineModifyError.error.message;
+    })
+  }
+
+
+
+  selectMachineType(machineType: MachineType) {
+    this.selectedMachineType = machineType;
+  }
+  selectSlotDuration() {
+
+
+    console.log("Hello" + this.selectedMachineSlot)
+    if (this.selectedMachineSlot == SlotDuration.SIXTY) {
+      this.selectedStartTime = this.sixtyMinsStartTime[0];
+      this.selectedEndTime = this.sixtyMinsEndTime[this.sixtyMinsEndTime.length - 1];
+
+    } else if (this.selectedMachineSlot == SlotDuration.THIRTY) {
+      this.selectedStartTime = this.thirtyMinsStartTime[0];
+      this.selectedEndTime = this.thirtyMinsEndTime[this.thirtyMinsEndTime.length - 1];
+
+    } else {
+      this.selectedStartTime = this.fifteenMinsStartTime[0];
+      this.selectedEndTime = this.fifteenMinsEndTime[this.fifteenMinsEndTime.length - 1];
+
+    }
+
+  }
+
+  initialiseTime() {
+
+    this.thirtyMinsStartTime = [];
+    this.thirtyMinsEndTime = [];
+
+    for (let hours = 0; hours < 24; hours++) {
+      for (let mins = 0; mins < 60; mins += 30) {
+        this.thirtyMinsStartTime.push(this.convertNumberToTwoDigit(hours) + ":" + this.convertNumberToTwoDigit(mins));
+        this.thirtyMinsEndTime.push(this.convertNumberToTwoDigit(hours) + ":" + this.convertNumberToTwoDigit(mins));
+
+      }
+    }
+
+    this.sixtyMinsStartTime = [];
+    this.sixtyMinsEndTime = [];
+
+    for (let hours = 0; hours < 24; hours++) {
+      this.sixtyMinsStartTime.push(this.convertNumberToTwoDigit(hours) + ":" + this.convertNumberToTwoDigit(0));
+      this.sixtyMinsEndTime.push(this.convertNumberToTwoDigit(hours) + ":" + this.convertNumberToTwoDigit(0));
+    }
+
+
+    this.fifteenMinsStartTime = [];
+    this.fifteenMinsEndTime = [];
+    for (let hours = 0; hours < 24; hours++) {
+      for (let mins = 0; mins < 60; mins += 15) {
+        //two zeros are to be done 4:00
+        this.fifteenMinsStartTime.push(this.convertNumberToTwoDigit(hours) + ":" + this.convertNumberToTwoDigit(mins));
+        this.fifteenMinsEndTime.push(this.convertNumberToTwoDigit(hours) + ":" + this.convertNumberToTwoDigit(mins));
+
+      }
+    }
+  }
+
+  convertNumberToTwoDigit(digit: number) {
+    //check if number is already of two digit
+    let numberInString: string = digit.toString();
+    if (numberInString.length >= 2) {
+      return digit.toString();
+    } else {
+      //append zero in the beginning
+      return ("0" + numberInString);
+    }
+
+  }
+
+  startTimeSelected() {
+
+    let startTimeSelectedIndex = 0;
+    if (this.selectedMachineSlot == SlotDuration.SIXTY) {
+      startTimeSelectedIndex = this.sixtyMinsStartTime.findIndex((time) => {
+        return this.selectedStartTime == time;
+      })
+
+
+    } else if (this.selectedMachineSlot == SlotDuration.THIRTY) {
+      startTimeSelectedIndex = this.thirtyMinsStartTime.findIndex((time) => {
+        return this.selectedStartTime == time;
+      })
+    } else {
+      startTimeSelectedIndex = this.fifteenMinsStartTime.findIndex((time) => {
+        return this.selectedStartTime == time;
+      })
+    }
+    this.startEndTimeIndex = startTimeSelectedIndex + 1;
+  }
+
+  endTimeSelected() {
+    // this.selectedEndTime = this.endTime[endTimeSeletedIndex];
+
+  }
+
+  onStartingDateChange() {
+    if (this.selectedStartDate > this.minDate) {
+      this.infoMessage = "Note that the machine will be in halt machine automatically and can't be booked, if machine starting date is later than the current date. We will resume the machine from the midnight hours of the " + this.selectedStartDate + " date. For machine to be in active state specify today's date only."
+      this.modifySelectedMachineStatus = MachineStatus.HALTED
+    } else {
+      this.infoMessage = undefined;
+    }
+  }
+
+
+  errorClosed() {
+    this.errorMessage = undefined;
+  }
+
+  successClosed() {
+    this.successMessage = undefined;
+  }
+
+  infoClosed() {
+    this.infoMessage = undefined;
+  }
+
 
 }
