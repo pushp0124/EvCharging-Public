@@ -20,6 +20,7 @@ export class ChargingService {
   loggedInUser : Employee = new Employee(1, null,null,null,false,null,null);
   loggedIn = new BehaviorSubject<boolean>(false);
   dateFormatter = 'yyyy-MM-dd'; 
+  normalMaintenanceDays  = 7;
   private baseUrl = "http://localhost:8080";
   stations: Station[];
 
@@ -104,12 +105,12 @@ export class ChargingService {
 	
 	
 	//This handles the put request for halting machine with new start date
-	haltMachine(machineId : number,newStartDate : Date) : Observable<Machine>{
+	haltMachine(machineId : number,newStartDate : string) : Observable<Machine>{
 		return this.http.put<Machine>(this.baseUrl + "/haltMachine/" + machineId + "/" + newStartDate, null);
 	}
 	
 	//This handles the halting request for normal maintenance of machine with new start date, new start time and new end time
-  	haltMachineNormalMaintenance(machineId : number,newStartDate : Date,newStartTime: string,newEndTime : string) : Observable<Machine> {
+  	haltMachineNormalMaintenance(machineId : number,newStartDate : string,newStartTime: string,newEndTime : string) : Observable<Machine> {
     return this.http.put<Machine>(this.baseUrl + "/haltMachine/normalMaintenance/" + machineId +  "/" + newStartDate + "/" + newStartTime + "/" + newEndTime, null);
 	}
 	
@@ -120,7 +121,7 @@ export class ChargingService {
 	
 	//This handles the put request for modifying machine with whole updated machine object passed in Request Body
   	modifyMachine(modifiedMachine : Machine) : Observable<Machine>  {
-		return this.http.put<Machine>(this.baseUrl + "/modifyMachine",null);
+		return this.http.put<Machine>(this.baseUrl + "/modifyMachine",modifiedMachine);
 	}
 	
 	//This handles the get request for report generation for all the bookings done at particular station from start to end date

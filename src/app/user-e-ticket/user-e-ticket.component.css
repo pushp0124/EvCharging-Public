@@ -1,8 +1,30 @@
-.theme {
+/* .theme {
     
     background:url("/assets/capgemini.png");
     background-repeat:no-repeat;
     background-attachment: fixed;
     background-position: center; 
     background-size: 100% 100%;
+} */
+
+.watermark {
+    size : 100% 100%;
+    display: block;
+    position: relative;
+}
+
+.watermark::after {
+    content: "";
+    background: url(/assets/capgemini.png);
+    opacity: 0.2;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background-repeat:no-repeat;
+    background-attachment: fixed;
+    background-position: center; 
+    background-size: 25% 50%;
+    position: absolute;
+    z-index: 0;
 }

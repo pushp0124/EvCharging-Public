@@ -112,8 +112,8 @@ export class AdminRemoveMachineComponent implements OnInit {
   machineRowClicked(clickedMachine: Machine) {
     this.dataLoaded = false
     this.selectedMachine = clickedMachine;
-    
-    if(this.selectedMachine.machineStatus == MachineStatus.REMOVED) {
+
+    if (this.selectedMachine.machineStatus == MachineStatus.REMOVED) {
       return
     }
 
@@ -126,13 +126,13 @@ export class AdminRemoveMachineComponent implements OnInit {
     this.barChartLabels = [];
     this.barChartData[0].data = []
 
-    
+
 
     this.chargingService.generateMachineBookingsReport(transformedFromDate, transformedToDate, this.selectedMachine.machineId).subscribe((bookings) => {
 
       this.bookings = this.sortAndFilterBookings(bookings);
 
-      
+
       var data;
       console.log(this.bookings)
       this.bookings.forEach(booking => {
@@ -195,9 +195,7 @@ export class AdminRemoveMachineComponent implements OnInit {
 
 
   //modify machine
-  startTime: string[] = [];
-  endTime: string[] = [];
-
+  modifySelectedMachine: Machine;
   slotDurations = [SlotDuration.SIXTY, SlotDuration.THIRTY, SlotDuration.FIFTEEN];
   //initialise
   modifySelectedStation: Station;
@@ -227,28 +225,39 @@ export class AdminRemoveMachineComponent implements OnInit {
 
   initialiseModifyMachine() {
 
-    console.log(this.selectedMachine)
-    this.modifySelectedStation = this.selectedMachine.machineStation;
-    this.selectedStartDate = this.selectedMachine.startingDate;
-    this.modifySelectedMachineType = this.selectedMachine.machineType
-    this.selectedMachineSlot = this.selectedMachine.slotDuration
-    this.modifySelectedMachineStatus = this.selectedMachine.machineStatus;
+    this.modifySelectedMachine = this.selectedMachine;
+    this.modifySelectedStation = this.modifySelectedMachine.machineStation;
+    this.selectedStartDate = this.modifySelectedMachine.startingDate;
+    this.modifySelectedMachineType = this.modifySelectedMachine.machineType
+    this.selectedMachineSlot = this.modifySelectedMachine.slotDuration
+    this.modifySelectedMachineStatus = this.modifySelectedMachine.machineStatus;
     //stat time, and end time not initialised 
     this.initialiseTime();
     this.selectSlotDuration()
-  
+
 
   }
 
   modifyMachine() {
 
-    this.selectedMachine.slotDuration = this.selectedMachineSlot
-    this.selectedMachine.machineType = this.modifySelectedMachineType
-    this.selectedMachine.startingDate = this.selectedStartDate
-    this.selectedMachine.startTime = this.selectedStartTime
-    this.selectedMachine.endTime = this.selectedEndTime
-    this.chargingService.modifyMachine(this.selectedMachine).subscribe((machines) => {
-      this.successMessage = "Machine Modified Successfully"
+    this.modifySelectedMachine.slotDuration = this.selectedMachineSlot
+    this.modifySelectedMachine.machineType = this.modifySelectedMachineType
+    this.modifySelectedMachine.startingDate = this.selectedStartDate
+    this.modifySelectedMachine.startTime = this.selectedStartTime
+    this.modifySelectedMachine.endTime = this.selectedEndTime
+    this.modifySelectedMachine.machineStatus = this.modifySelectedMachineStatus
+    this.chargingService.modifyMachine(this.modifySelectedMachine).subscribe((machine: Machine) => {
+
+      let index = this.machines.findIndex((_machine) => {
+        return _machine.machineId == machine.machineId
+      })
+      if (index == -1) {
+        this.errorMessage = "Machine modify changes the machine id!"
+        return
+      }
+      this.machines[index] = machine;
+      this.dataSource.data = this.machines;
+      this.successMessage = "Machine modified successfully"
     }, (machineModifyError) => {
       this.errorMessage = machineModifyError.error.message;
     })
@@ -260,9 +269,6 @@ export class AdminRemoveMachineComponent implements OnInit {
     this.selectedMachineType = machineType;
   }
   selectSlotDuration() {
-
-
-    console.log("Hello" + this.selectedMachineSlot)
     if (this.selectedMachineSlot == SlotDuration.SIXTY) {
       this.selectedStartTime = this.sixtyMinsStartTime[0];
       this.selectedEndTime = this.sixtyMinsEndTime[this.sixtyMinsEndTime.length - 1];
@@ -361,6 +367,65 @@ export class AdminRemoveMachineComponent implements OnInit {
   }
 
 
+  //haltMachine
+
+  haltMachineForNormalMaintenance() {
+    let normalMaintenanceDate = new Date(this.minDate.getDate() + this.chargingService.normalMaintenanceDays)
+    let transformedDate = this.datePipe.transform(normalMaintenanceDate, this.chargingService.dateFormatter);
+    console.log(transformedDate)
+    this.chargingService.haltMachine(this.selectedMachine.machineId, transformedDate).subscribe((machine) => {
+      let index = this.machines.findIndex((_machine) => {
+        return _machine.machineId == machine.machineId
+      })
+      if (index == -1) {
+        this.errorMessage = "Machine halt changes the machine id!"
+        return
+      }
+      this.machines[index] = machine;
+      this.dataSource.data = this.machines;
+      this.successMessage = "Machine halted successfully under normal maintenance"
+    }, (machineHaltError) => {
+      this.errorMessage = machineHaltError.error.message;
+    })
+  }
+
+
+  //resumeMachine
+
+  resumeMachine() {
+    this.chargingService.resumeMachine(this.selectedMachine.machineId).subscribe((machine) => {
+      let index = this.machines.findIndex((_machine) => {
+        return _machine.machineId == machine.machineId
+      })
+      if (index == -1) {
+        this.errorMessage = "Machine resume changes the machine id!"
+        return
+      }
+      this.machines[index] = machine;
+      this.dataSource.data = this.machines;
+      this.successMessage = "Machine resumed successfully"
+    }, (machineResumeError) => {
+      this.errorMessage = machineResumeError.error.message;
+    })
+  }
+
+  //removeMachine
+  removeMachine() {
+    this.chargingService.removeMachine(this.selectedMachine.machineId).subscribe((machine) => {
+      let index = this.machines.findIndex((_machine) => {
+        return _machine.machineId == machine.machineId
+      })
+      if (index == -1) {
+        this.errorMessage = "Machine removal changes the machine id!"
+        return
+      }
+      this.machines[index] = machine;
+      this.dataSource.data = this.machines;
+      this.successMessage = "Machine removed successfully"
+    }, (machineRemoveError) => {
+      this.errorMessage = machineRemoveError.error.message;
+    })
+  }
   errorClosed() {
     this.errorMessage = undefined;
   }
@@ -372,6 +437,9 @@ export class AdminRemoveMachineComponent implements OnInit {
   infoClosed() {
     this.infoMessage = undefined;
   }
+
+
+
 
 
 }

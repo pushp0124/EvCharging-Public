@@ -26,11 +26,11 @@ table {
 }
 
 :host ::ng-deep .mat-tab-body-wrapper {
-  height: 500px;
+  height: 600px;
 
 }
 
 :host ::ng-deep .mat-tab-body.mat-tab-body-active {
-  height: 500px;
+  height: 600px;
 
 }

@@ -1,9 +1,10 @@
-<div class="theme">
+<div #myDiv>
+   
     <h2 mat-dialog-title>Your E-Ticket</h2>
 
-    <mat-dialog-content>
+    <mat-dialog-content class = "watermark" >
 
-
+    
         <table class="table table-striped; theme-table">
             <tbody>
                 <tr>
@@ -54,7 +55,7 @@
 
     </mat-dialog-content>
     <mat-dialog-actions align="end">
-        <button mat-dialog-close mat-button mat-raised-button color="primary" onClick="window.print()">Print</button>
+        <button mat-dialog-close  mat-raised-button color="primary" (click)="printWindow()">Print</button>
         <button mat-raised-button color="primary" mat-dialog-close=true>Close</button>
     </mat-dialog-actions>
 

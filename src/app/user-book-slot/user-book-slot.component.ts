@@ -183,12 +183,10 @@ export class UserBookSlotComponent implements OnInit {
 
       let dialogRef = this.matDialog.open(UserETicketComponent, {
         data: this.booking,
-        width: '50%',
-        height: '70%'
       });
       dialogRef.afterClosed().subscribe((result) => {
+        this.getMachineDetail()
         this.successMessage = "Machine Booked Successfully";
-        this.ngOnInit();
       })
 
 

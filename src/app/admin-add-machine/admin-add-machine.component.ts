@@ -17,8 +17,7 @@ import { ChargingService } from '../charging.service';
 })
 export class AdminAddMachineComponent implements OnInit {
 
-    startTime: string[] = [];
-    endTime: string[] = [];
+    
     selectedStartTime: string;
     selectedEndTime: string;
 
