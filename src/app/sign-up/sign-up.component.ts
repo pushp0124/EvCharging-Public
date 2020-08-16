@@ -58,11 +58,11 @@ export class SignUpComponent implements OnInit {
 
   registerEmployee() {
       //get the current route path
-      let currentUrl = this.router.url
-      let arrayOfUrls = currentUrl.split("/");
-      if(arrayOfUrls[arrayOfUrls.length - 1] == 'adminSignup') {
-          this.isAdminSignUp = true;
-      }
+      // let currentUrl = this.router.url
+      // let arrayOfUrls = currentUrl.split("/");
+      // if(arrayOfUrls[arrayOfUrls.length - 1] == 'adminSignup') {
+      //     this.isAdminSignUp = true;
+      // }
       let employee = new Employee(null,this.email.value,this.name.value,this.phoneNo.value,this.isAdminSignUp,this.selectedMachineType,this.selectedStation);
       
       this.chargingService.registerEmployee(employee,this.password.value,false).subscribe((employeeId) => {

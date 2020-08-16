@@ -185,8 +185,8 @@ export class UserBookSlotComponent implements OnInit {
         data: this.booking,
       });
       dialogRef.afterClosed().subscribe((result) => {
-        this.getMachineDetail()
-        this.successMessage = "Machine Booked Successfully";
+        // this.getMachineDetail()
+        // this.successMessage = "Machine Booked Successfully";
       })
 
 
