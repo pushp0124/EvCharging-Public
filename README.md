@@ -1,3 +1,5 @@
+Contains user part only, for showcasing and learning of the project. 
+
 # EvCharging
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.3.29.
